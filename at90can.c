@@ -154,7 +154,11 @@ at90can_init(void)
 // The CANPAGE register have to be restored after usage, otherwise it
 // could cause trouble in the application programm.
 
-ISR(CANIT_vect)
+#ifdef AT90CAN
+	ISR(CANIT_vect)
+#else
+	ISR(CAN_INT_vect)
+#endif
 {
 	uint8_t canpage;
 	uint8_t mob;
@@ -202,6 +206,8 @@ ISR(CANIT_vect)
 
 // ----------------------------------------------------------------------------
 // Overflow of CAN timer
-ISR(OVRIT_vect)
-{
-}
+#ifdef AT90CAN
+	ISR(OVRIT_vect) {}
+#else
+	ISR(CAN_TOVF_vect) {}
+#endif

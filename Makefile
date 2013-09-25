@@ -41,7 +41,7 @@
 
 
 # MCU name
-MCU = at90can128
+MCU = atmega64m1
 
 BOOTLOADER_BOARD_ID = 0xff
 
@@ -51,6 +51,9 @@ F_CPU = 16000000
 # Startaddress of the bootloader, 4096 word
 ifeq ($(MCU), at90can128)
 BOOTSTART = 0x1E000
+endif
+ifeq ($(MCU), atmega64m1)
+BOOTSTART = 0xE000
 endif
 
 # Output format. (can be srec, ihex, binary)
@@ -82,8 +85,8 @@ CPPSRC =
 ASRC = 
 
 # Programming Options
-AVRDUDE_PROGRAMMER = stk500v1
-AVRDUDE_PORT = /dev/ttyUSB0
+AVRDUDE_PROGRAMMER = usbtiny
+AVRDUDE_PORT = usb
 
 # Optimization level, can be [0, 1, 2, 3, s]. 
 #     0 = turn off optimization. s = optimize for size.

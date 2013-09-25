@@ -1,0 +1,4 @@
+Syntax: glob
+
+build/
+.dep/
