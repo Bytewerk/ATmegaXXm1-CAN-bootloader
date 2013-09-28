@@ -62,10 +62,10 @@ at90can_send_message(command_t type, uint8_t length)
 				CANSTMOB &= 0;
 
 				// set identifier
-				CANIDT4 = (0x133707ffUL <<3)&0xff;
-				CANIDT3 = (0x133707ffUL >>5)&0xff;
-				CANIDT2 = (0x133707ffUL >>13)&0xff;
-				CANIDT1 = (0x133707ffUL >>21)&0xff;
+				CANIDT4 = (0x133707feUL <<3)&0xff;
+				CANIDT3 = (0x133707feUL >>5)&0xff;
+				CANIDT2 = (0x133707feUL >>13)&0xff;
+				CANIDT1 = (0x133707feUL >>21)&0xff;
 				
 				CANMSG = BOOTLOADER_BOARD_ID;
 				CANMSG = type;
