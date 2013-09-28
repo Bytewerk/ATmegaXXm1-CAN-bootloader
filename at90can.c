@@ -135,18 +135,24 @@ at90can_init(void)
 		CANPAGE = (mob << 4);
 		
 		CANSTMOB = 0;
-		CANCDMOB = (1 << CONMOB1);
+		CANCDMOB = (1 << CONMOB1)|(1<<IDE);
 		
-		// only standard, non-rtr frames with identifier 0x7ff
-		CANIDT4 = 0;
-		CANIDT3 = 0;
-		CANIDT2 = (uint8_t) (0x7ff << 5);
-		CANIDT1 = (uint8_t) (0x7ff >> 3);
+		// only extended, non-rtr frames with identifier 0x133707ff
+
+		CANIDT4 = (0x133707ffUL <<3)&0xff;
+		CANIDT3 = (0x133707ffUL >>5)&0xff;
+		CANIDT2 = (0x133707ffUL >>13)&0xff;
+		CANIDT1 = (0x133707ffUL >>21)&0xff;
 		
-		CANIDM4 = (1 << IDEMSK) | (1 << RTRMSK);
-		CANIDM3 = 0;
-		CANIDM2 = (uint8_t) (0x7ff << 5);
-		CANIDM1 = (uint8_t) (0x7ff >> 3);
+		CANIDM4 = (1 << IDEMSK) | (1 << RTRMSK) | ((0x133707ffUL <<3)&0xff);
+		CANIDM3 = (0x133707ffUL >>5)&0xff;
+		CANIDM2 = (0x133707ffUL >>13)&0xff;
+		CANIDM1 = (0x133707ffUL >>21)&0xff; 
+
+		//CANIDM4 = (1 << IDEMSK) | (1 << RTRMSK);
+		//CANIDM3 = 0;
+		//CANIDM2 = (uint8_t) (0x7ff << 5);
+		//CANIDM1 = (uint8_t) (0x7ff >> 3);
 	}
 	
 	// enable interrupts for the MObs

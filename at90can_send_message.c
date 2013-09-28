@@ -60,12 +60,12 @@ at90can_send_message(command_t type, uint8_t length)
 			{
 				// clear flags (read-write-cycle required)
 				CANSTMOB &= 0;
-				
+
 				// set identifier
-				CANIDT4 = 0;
-				CANIDT3 = 0;
-				CANIDT2 = (uint8_t) (0x7fe << 5);
-				CANIDT1 = (uint8_t) (0x7fe >> 3);
+				CANIDT4 = (0x133707ffUL <<3)&0xff;
+				CANIDT3 = (0x133707ffUL >>5)&0xff;
+				CANIDT2 = (0x133707ffUL >>13)&0xff;
+				CANIDT1 = (0x133707ffUL >>21)&0xff;
 				
 				CANMSG = BOOTLOADER_BOARD_ID;
 				CANMSG = type;
@@ -86,7 +86,7 @@ at90can_send_message(command_t type, uint8_t length)
 				}
 				
 				// enable transmission
-				CANCDMOB = (1 << CONMOB0) | (length + 4);
+				CANCDMOB = (1 << CONMOB0) | (1<<IDE) | (length + 4);
 				
 				return;
 			}
