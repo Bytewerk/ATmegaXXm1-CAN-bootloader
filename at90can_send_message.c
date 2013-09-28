@@ -45,7 +45,12 @@ at90can_send_message(command_t type, uint8_t length)
 			continue;
 		}
 		
+
+#ifdef AT90CAN
 		for (uint8_t mob = 8; mob < 15; mob++)
+#else
+		for (uint8_t mob = 3; mob < 6; mob++)
+#endif
 		{
 			// load MOb page
 			CANPAGE = mob << 4;

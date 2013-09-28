@@ -123,8 +123,14 @@ at90can_init(void)
 	at90can_messages_waiting = 0;
 	at90can_free_buffer = 7;
 	
-	// set filter for MOb 0 to 8
+
+#ifdef AT90CAN
+	// set filter for MOb 0 to 7
 	for (uint8_t mob = 0; mob < 8; mob++)
+#else
+	// set filter for MOb 0 to 2
+	for (uint8_t mob = 0; mob < 3; mob++)
+#endif
 	{
 		CANPAGE = (mob << 4);
 		
