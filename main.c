@@ -173,9 +173,16 @@ main(void)
 	BOOT_LED_ON;
 	
 	// Relocate interrupt vectors to boot area
-	MCUCR = (1 << IVCE);
-	MCUCR = (1 << IVSEL);
+
+	uint8_t regCE = MCUCR & ~((1 << IVCE) | (1 << IVSEL));
+	uint8_t regSEL = MCUCR & ~((1 << IVCE) | (1 << IVSEL));
 	
+	regCE  |= (1 << IVCE);
+	regSEL |= (1 << IVSEL);
+	MCUCR = regCE;
+	MCUCR = regSEL;
+
+
 	at90can_init();
 	
 	// start timer

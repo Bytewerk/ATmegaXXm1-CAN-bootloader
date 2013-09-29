@@ -49,6 +49,13 @@ uint8_t message_data[4];
 void
 at90can_init(void)
 {
+
+        // PB5 == EN
+        // PB6 == STDBY  
+        DDRB  |= (1<<PB5)|(1<<PB6);
+        PORTB |= (1<<PB5)|(1<<PB6);
+
+
 	// switch CAN controller to reset mode
 	CANGCON |= (1 << SWRES);
 	
@@ -100,7 +107,7 @@ at90can_init(void)
 	// activate CAN transmit- and receive-interrupt
 	CANGIT = 0;
 	CANGIE = (1 << ENIT) | (1 << ENRX) | (1 << ENTX);
-	
+
 	// set timer prescaler to 199 which results in a timer
 	// frequency of 10 kHz (at 16 MHz)
 	CANTCON = 199;
@@ -110,7 +117,11 @@ at90can_init(void)
 	CANIE2 = 0;
 	
 	// disable all MObs
+#ifdef AT90CAN
 	for (uint8_t mob = 0; mob < 15; mob++)
+#else
+	for (uint8_t mob = 0; mob < 6; mob++)
+#endif
 	{
 		CANPAGE = (mob << 4);
 		
@@ -121,7 +132,7 @@ at90can_init(void)
 	
 	// mark all MObs as free
 	at90can_messages_waiting = 0;
-	at90can_free_buffer = 7;
+	at90can_free_buffer = 3;
 	
 
 #ifdef AT90CAN
@@ -166,6 +177,7 @@ at90can_init(void)
 // The CANPAGE register have to be restored after usage, otherwise it
 // could cause trouble in the application programm.
 
+
 #ifdef AT90CAN
 	ISR(CANIT_vect)
 #else
@@ -199,11 +211,19 @@ at90can_init(void)
 		}
 		
 		// reset interrupt
+#ifdef AT90CAN
 		if (mob < 8) {
+#else
+		if (mob < 3) {
+#endif
 			CANIE2 &= ~(1 << mob);
 		}
 		else {
+#ifdef AT90CAN
 			CANIE1 &= ~(1 << (mob - 8));
+#else
+			CANIE1 &= ~(1 << (mob - 3));
+#endif
 		}
 		
 		// restore MOb page register
@@ -223,3 +243,13 @@ at90can_init(void)
 #else
 	ISR(CAN_TOVF_vect) {}
 #endif
+
+
+/*
+ISR(BADISR_vect)
+{
+    // user code here
+  while(1) PORTD  &= ~(1<<PD7);
+}
+*/
+
