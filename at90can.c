@@ -155,10 +155,10 @@ at90can_init(void)
 		CANIDT2 = (0x133707ffUL >>13)&0xff;
 		CANIDT1 = (0x133707ffUL >>21)&0xff;
 		
-		CANIDM4 = (1 << IDEMSK) | (1 << RTRMSK) | ((0x133707ffUL <<3)&0xff);
-		CANIDM3 = (0x133707ffUL >>5)&0xff;
-		CANIDM2 = (0x133707ffUL >>13)&0xff;
-		CANIDM1 = (0x133707ffUL >>21)&0xff; 
+		CANIDM4 = (1 << IDEMSK) | (1 << RTRMSK) | ((0x1fffffffUL <<3)&0xff);
+		CANIDM3 = (0x1fffffffUL >>5)&0xff;
+		CANIDM2 = (0x1fffffffUL >>13)&0xff;
+		CANIDM1 = (0x1fffffffUL >>21)&0xff; 
 
 		//CANIDM4 = (1 << IDEMSK) | (1 << RTRMSK);
 		//CANIDM3 = 0;
