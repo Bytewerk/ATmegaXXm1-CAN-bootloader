@@ -130,6 +130,14 @@
 	#define	SIG_DEVICE	0x84
 	#define	TIMER_INTERRUPT_FLAG_REGISTER	TIFR1
 	
+#elif defined(__AVR_ATmega16M1__)
+	
+	#define	RWW_PAGES	96
+//	#define	RAMSTART	0x0100
+	#define	SIG_FAMILY	0x94
+	#define	SIG_DEVICE	0x84
+	#define	TIMER_INTERRUPT_FLAG_REGISTER	TIFR1
+	
 #else
 	#error	chosen AVR command is not supported yet!
 #endif

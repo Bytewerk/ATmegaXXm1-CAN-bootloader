@@ -41,7 +41,7 @@
 
 
 # MCU name
-MCU = atmega64m1
+MCU = atmega16m1
 
 BOOTLOADER_BOARD_ID = 0xff
 
@@ -52,8 +52,13 @@ F_CPU = 16000000
 ifeq ($(MCU), at90can128)
 BOOTSTART = 0x1E000
 endif
+# Startaddress of the bootloader, 4096 word
 ifeq ($(MCU), atmega64m1)
 BOOTSTART = 0xE000
+endif
+# Startaddress of the bootloader, 2048 word
+ifeq ($(MCU), atmega16m1)
+BOOTSTART = 0x3000
 endif
 
 # Output format. (can be srec, ihex, binary)
