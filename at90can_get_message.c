@@ -95,8 +95,8 @@ at90can_get_message(void)
 			CANIE2 |= (1 << mob);
 			
 			// clear flags
-			CANCDMOB = (1 << CONMOB1);
-			
+			CANCDMOB = (1 << CONMOB1)|(1<<IDE);
+
 			return type;
 		}
 	}

@@ -167,7 +167,7 @@ at90can_init(void)
 	}
 	
 	// enable interrupts for the MObs
-	CANIE2 = 0xff;
+	CANIE2 = 0x3f;
 	
 	// activate CAN controller
 	CANGCON = (1 << ENASTB);
@@ -213,18 +213,14 @@ at90can_init(void)
 		// reset interrupt
 #ifdef AT90CAN
 		if (mob < 8) {
-#else
-		if (mob < 3) {
-#endif
 			CANIE2 &= ~(1 << mob);
 		}
 		else {
-#ifdef AT90CAN
 			CANIE1 &= ~(1 << (mob - 8));
-#else
-			CANIE1 &= ~(1 << (mob - 3));
-#endif
 		}
+#else
+		CANIE2 &= ~(1<<mob);
+#endif
 		
 		// restore MOb page register
 		CANPAGE = canpage;
@@ -252,4 +248,5 @@ ISR(BADISR_vect)
   while(1) PORTD  &= ~(1<<PD7);
 }
 */
+
 
