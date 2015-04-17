@@ -55,6 +55,8 @@
 
 #include "at90can.h"
 
+#include "uartx.h"
+
 #define	MESSAGE_NUMBER			message_number
 #define	MESSAGE_DATA_COUNTER	message_data_counter
 #define	MESSAGE_DATA_LENGH		message_data_length
@@ -192,6 +194,9 @@ main(void)
 
 	// clear overflow-flag
 	TIMER_INTERRUPT_FLAG_REGISTER = (1 << TOV1);
+
+	uart_init();
+	uart_puts("\r\nStartOfMain\r\n");
 	
 	sei();
 

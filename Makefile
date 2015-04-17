@@ -78,7 +78,7 @@ SRC  = main.c
 SRC += at90can.c
 SRC += at90can_get_message.c
 SRC += at90can_send_message.c
-
+SRC += uartx.c
 
 # List C++ source files here. (C dependencies are automatically generated.)
 CPPSRC = 
