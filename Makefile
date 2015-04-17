@@ -90,7 +90,7 @@ CPPSRC =
 ASRC = 
 
 # Programming Options
-AVRDUDE_PROGRAMMER = usbtiny
+AVRDUDE_PROGRAMMER = mcprog
 AVRDUDE_PORT = usb
 
 # Optimization level, can be [0, 1, 2, 3, s]. 
