@@ -258,6 +258,7 @@ main(void)
 		// --------------------------------------------------------------------
 		// set the current address in the page buffer
 		case SET_ADDRESS:
+			uart_puts("\r\nSET_ADDRESS\r\n");
 			page = (message_data[0] << 8) | message_data[1];
 			
 			if (message_data_length == 4 && 
@@ -332,6 +333,7 @@ main(void)
 		// --------------------------------------------------------------------
 		// start the flashed application program
 		case START_APP:
+			uart_puts("\r\nSTART_APP\r\n");
 			at90can_send_message(START_APP | SUCCESSFULL_RESPONSE, 0);
 			
 			// wait for the mcp2515 to send the message

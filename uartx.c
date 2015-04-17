@@ -8,8 +8,9 @@ int uart_init(void)
 
     // F_CPU == 16MHz!
     // Baud Rate = 19200
-    // --> LINBRR == 833.3333333
-    LINBRR = 833;
+    // --> LINBRR == 833.3333333 / 32 samples
+		// --> LINBRR == 26
+    LINBRR = 26;
 
     LINCR =  (1<<LENA); // enable UART
     LINCR |= (1<<LCMD2)|(1<<LCMD0); // enable UART TX function
