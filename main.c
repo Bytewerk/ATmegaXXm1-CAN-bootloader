@@ -201,6 +201,8 @@ main(void)
 	//uint8_t buf[50];
 	//uint16_t i=0;
 
+	char buf[50];
+
 	sei();
 
 	while (1)
@@ -229,7 +231,9 @@ main(void)
 		// stop timer
 		TCCR1B = 0;
 
-		uart_puts("GOT MSG!\r\n");
+		uart_puts("got msg type: ");
+		uart_send_byte(command+'0');
+		uart_puts("\r\n");
 
 		// check if the message is a request, otherwise reject it
 		if ((command & ~COMMAND_MASK) != REQUEST)
@@ -268,7 +272,6 @@ main(void)
 		// --------------------------------------------------------------------
 		// set the current address in the page buffer
 		case SET_ADDRESS:
-			uart_puts("SET_ADDRESS\r\n");
 			page = (message_data[0] << 8) | message_data[1];
 			
 			if (message_data_length == 4 && 
@@ -277,7 +280,9 @@ main(void)
 			{
 				flashpage = page;
 				page_buffer_pos = message_data[3];
-				
+				snprintf(buf, 50, "SET_ADDRESS: page==%d pos==%d\r\n", flashpage, page_buffer_pos);
+				uart_puts(buf);
+
 				state = COLLECT_DATA;
 				
 				at90can_send_message(SET_ADDRESS | SUCCESSFULL_RESPONSE, 4);
@@ -317,6 +322,7 @@ main(void)
 			
 			if (message_data_counter == 0)
 			{
+			  uart_puts("flashing 1\r\n");
 				if (page_buffer_pos == (SPM_PAGESIZE / 4))
 				{
 					message_data[0] = flashpage >> 8;
@@ -324,17 +330,21 @@ main(void)
 					
 					if (flashpage >= RWW_PAGES) {
 						message_data_length = 2;
+						uart_puts("flashing goto_error\r\n");
 						goto error_response;
 					}
-					
+					snprintf(buf, 50, "flashing page %d\r\n", flashpage);
+					uart_puts(buf);
 					boot_program_page( flashpage, page_buffer );
 					page_buffer_pos = 0;
 					flashpage += 1;
 					
 					// send ACK
+					uart_puts("flashing 2\r\n");
 					at90can_send_message(DATA | SUCCESSFULL_RESPONSE, 2);
 				}
 				else {
+					uart_puts("flashing 3\r\n");
 					at90can_send_message(DATA | SUCCESSFULL_RESPONSE, 0);
 				}
 			}
