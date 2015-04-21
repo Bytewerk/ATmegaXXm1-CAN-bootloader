@@ -198,6 +198,9 @@ main(void)
 	uart_init();
 	uart_puts("\r\nStartOfMain\r\n");
 	
+	//uint8_t buf[50];
+	//uint16_t i=0;
+
 	sei();
 
 	while (1)
@@ -209,6 +212,10 @@ main(void)
 		// wait until we receive a new message
 		while ((command = at90can_get_message()) == NO_MESSAGE)
 		{
+		  //snprintf(buf, 50, "WaitingForCanMsg::%d\r\n", i++);
+		  //buf[50] = 0;
+		  //uart_puts(buf);
+		  
 			if (TIMER_INTERRUPT_FLAG_REGISTER & (1 << TOV1))
 			{
 				BOOT_LED_OFF;
@@ -216,11 +223,14 @@ main(void)
 				// timeout => start application
 				boot_jump_to_application();
 			}
+		  
 		}
-		
+
 		// stop timer
 		TCCR1B = 0;
-		
+
+		uart_puts("GOT MSG!\r\n");
+
 		// check if the message is a request, otherwise reject it
 		if ((command & ~COMMAND_MASK) != REQUEST)
 			continue;
@@ -258,7 +268,7 @@ main(void)
 		// --------------------------------------------------------------------
 		// set the current address in the page buffer
 		case SET_ADDRESS:
-			uart_puts("\r\nSET_ADDRESS\r\n");
+			uart_puts("SET_ADDRESS\r\n");
 			page = (message_data[0] << 8) | message_data[1];
 			
 			if (message_data_length == 4 && 
@@ -333,7 +343,7 @@ main(void)
 		// --------------------------------------------------------------------
 		// start the flashed application program
 		case START_APP:
-			uart_puts("\r\nSTART_APP\r\n");
+			uart_puts("START_APP\r\n");
 			at90can_send_message(START_APP | SUCCESSFULL_RESPONSE, 0);
 			
 			// wait for the mcp2515 to send the message
