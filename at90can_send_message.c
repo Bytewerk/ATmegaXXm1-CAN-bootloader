@@ -79,7 +79,12 @@ at90can_send_message(command_t type, uint8_t length)
 				}
 				
 				// enable MOb interrupt
+#ifdef AT90CAN
 				CANIE1 |= (1 << (mob - 8));
+#else
+				CANIE2 |= (1<<mob);
+#endif
+
 				
 				ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
 					at90can_free_buffer--;
