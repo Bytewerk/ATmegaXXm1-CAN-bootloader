@@ -156,6 +156,8 @@ boot_program_page(uint16_t page, uint8_t *buf)
 int
 main(void) __attribute__((OS_main));
 
+uint8_t bootloader_board_id;
+
 int
 main(void)
 {
@@ -182,6 +184,7 @@ main(void)
 	MCUCR = regCE;
 	MCUCR = regSEL;
 
+	bootloader_board_id = eeprom_read_byte((uint8_t*)EEPROM_BOARD_ID_ADDR);
 
 	at90can_init();
 	
@@ -336,7 +339,19 @@ main(void)
 			BOOT_LED_OFF;
 			boot_jump_to_application();
 			break;
+
+		// Store BOOTLOADER BOARD ID in EEPROM, so we can change it at runtime
+		case SET_BOARD_ID:
+			if (message_data_length >= 3) {
+				eeprom_write_byte((uint8_t*)EEPROM_BOARD_ID_ADDR, message_data[2]);
+				at90can_send_message(DATA | SUCCESSFULL_RESPONSE, 2);
+				break;
+			}
+			at90can_send_message(DATA | SUCCESSFULL_RESPONSE, 0);
+			break;
 		
+
+			
 #if BOOTLOADER_TYPE > 0
 		// --------------------------------------------------------------------
 		case GET_FUSEBITS:
@@ -391,7 +406,7 @@ main(void)
 			}
 			response = NACK;
 			break;
-		
+
 		// Lese 1..65556 Byte aus dem Flash. Bei mehr als 6 Zeichen
 		// wird das Ergebniss auf mehrere Nachrichten verteilt.
 		case READ_FLASH:

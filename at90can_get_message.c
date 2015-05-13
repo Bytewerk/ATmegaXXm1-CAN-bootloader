@@ -34,6 +34,8 @@
 
 #include "at90can.h"
 
+extern uint8_t bootloader_board_id;
+
 // ----------------------------------------------------------------------------
 static bool
 check_message(void)
@@ -73,7 +75,8 @@ at90can_get_message(void)
 			
 			uint8_t type = NO_MESSAGE;
 			uint8_t board_id = CANMSG;
-			if (message_data_length >= 4 && board_id == BOOTLOADER_BOARD_ID)
+			//if (message_data_length >= 4 && board_id == BOOTLOADER_BOARD_ID)
+			if (message_data_length >= 4 && board_id == bootloader_board_id)
 			{
 				type = CANMSG;
 				message_number = CANMSG;

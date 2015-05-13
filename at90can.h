@@ -68,6 +68,7 @@ typedef enum
 	// only avilable in the "bigger" versions
 	GET_FUSEBITS	= 5,
 	CHIP_ERASE		= 6,
+	SET_BOARD_ID = 7,
 	
 	REQUEST					= 0x00,
 	SUCCESSFULL_RESPONSE	= 0x40,

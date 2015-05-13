@@ -34,6 +34,8 @@
 
 #include "at90can.h"
 
+extern uint8_t bootloader_board_id;
+
 // ----------------------------------------------------------------------------
 void
 at90can_send_message(command_t type, uint8_t length)
@@ -67,7 +69,8 @@ at90can_send_message(command_t type, uint8_t length)
 				CANIDT2 = (0x133707feUL >>13)&0xff;
 				CANIDT1 = (0x133707feUL >>21)&0xff;
 				
-				CANMSG = BOOTLOADER_BOARD_ID;
+				//CANMSG = BOOTLOADER_BOARD_ID;
+				CANMSG = bootloader_board_id;
 				CANMSG = type;
 				CANMSG = message_number;
 				CANMSG = message_data_counter;
