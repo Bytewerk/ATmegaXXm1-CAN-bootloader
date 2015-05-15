@@ -50,16 +50,6 @@ void
 at90can_init(void)
 {
 
-        // PB5 == EN
-        // PB6 == STDBY  
-        //DDRB  |= (1<<PB5)|(1<<PB6);
-        //PORTB |= (1<<PB5)|(1<<PB6);
-        // PB4 == EN
-        // PB3 == STDBY  
-        DDRB  |= (1<<PB3)|(1<<PB4);
-        PORTB |= (1<<PB3)|(1<<PB4);
-
-
 	// switch CAN controller to reset mode
 	CANGCON |= (1 << SWRES);
 	
