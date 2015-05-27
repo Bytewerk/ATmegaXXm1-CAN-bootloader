@@ -558,3 +558,6 @@ $(shell mkdir $(OBJDIR) 2>/dev/null)
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
 build elf hex eep lss sym coff extcoff \
 clean clean_list program debug gdb-config
+
+fuse:
+	avrdude -c mcprog -p m16m1 -x clockrate=125000 -U lfuse:w:0xff:m -U hfuse:w:0xd8:m -U efuse:w:0xfb:m 
